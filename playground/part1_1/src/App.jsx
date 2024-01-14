@@ -1,13 +1,35 @@
+import { useState } from 'react'
+
+const Display = ({ counter }) => <div>{counter}</div>
+
+const Button = ({ onClick, text }) => <button onClick={onClick}>{text}</button>
+
+
 const App = () => {
-  const friends = [
-    { name: 'Peter', age: 4 },
-    { name: 'Maya', age: 10 },
-  ]
+  const [counter, setCounter] = useState(0)
+  console.log('rendering with counter value', counter)
+
+  const increaseByOne = () => {
+    console.log('increasing, value before', counter)
+    setCounter(counter + 1)
+  }
+
+  const decreaseByOne = () => {
+    console.log('decreasing, value before', counter)
+    setCounter(counter - 1)
+  }
+
+  const setToZero = () => {
+    console.log('resetting to zero, value before', counter)
+    setCounter(0)
+  }
 
   return (
     <div>
-      <p>{friends[0].name} {friends[0].age}</p>
-      <p>{friends[1].name} {friends[1].age}</p>
+      <Display counter={counter} />
+      <Button onClick={increaseByOne} text="plus" />
+      <Button onClick={setToZero} text="zero" />
+      <Button onClick={decreaseByOne} text="minus" />
     </div>
   )
 }
