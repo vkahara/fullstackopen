@@ -1,13 +1,14 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
 
-const Display = props => <div>{props.text} {props.value}</div>
+const Statistics = props => <div>{props.text} {props.value}</div>
 
 const Button = (props) => (
   <button onClick={props.onClick}>
     {props.text}
   </button>
 )
+
 
 const App = () => {
   //save clicks of each button to its own state
@@ -40,12 +41,12 @@ const App = () => {
       <Button onClick= {handleNeutralClick} text="neutral" />
       <Button onClick= {handleBadClick} text="bad" />
       <h1>statistics</h1>
-      <Display text="good" value={good} />
-      <Display text="neutral" value={neutral} />
-      <Display text="bad" value={bad} />
-      <Display text="all" value={total} />
-      <Display text="average" value={averageCounter / total} />
-      <Display text="positive" value={good / total * 100 + ' %'} />
+      <Statistics text="good" value={good} />
+      <Statistics text="neutral" value={neutral} />
+      <Statistics text="bad" value={bad} />
+      <Statistics text="all" value={total} />
+      <Statistics text="average" value={averageCounter / total} />
+      <Statistics text="positive" value={good / total * 100 + ' %'} />
     </div>
   )
 }
