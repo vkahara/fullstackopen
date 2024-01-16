@@ -1,7 +1,19 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
 
-const Statistics = props => <div>{props.text} {props.value}</div>
+const Statistics = (props) => {
+  console.log(props.value)
+  return (
+  <div>
+    <div>good {props.good} </div>
+    <div>neutral {props.neutral} </div>
+    <div>bad {props.bad} </div>
+    <div>all {props.all} </div>
+    <div>average {props.average} </div>
+    <div>positive {props.positive} </div>
+  </div>
+  )
+}
 
 const Button = (props) => (
   <button onClick={props.onClick}>
@@ -18,6 +30,7 @@ const App = () => {
   const [total, setTotal] = useState(0)
   const [averageCounter, setAverageCounter] = useState(0)
 
+
   const handleGoodClick = () => {
     setGood(good + 1)
     setTotal(total + 1)
@@ -33,7 +46,6 @@ const App = () => {
     setAverageCounter(averageCounter - 1)
   }
 
-
   return (
     <div>
       <h1>Give feedback</h1>
@@ -41,12 +53,14 @@ const App = () => {
       <Button onClick= {handleNeutralClick} text="neutral" />
       <Button onClick= {handleBadClick} text="bad" />
       <h1>statistics</h1>
-      <Statistics text="good" value={good} />
-      <Statistics text="neutral" value={neutral} />
-      <Statistics text="bad" value={bad} />
-      <Statistics text="all" value={total} />
-      <Statistics text="average" value={averageCounter / total} />
-      <Statistics text="positive" value={good / total * 100 + ' %'} />
+      <Statistics
+      good={good}
+      neutral={neutral}
+      bad={bad}
+      all={total}
+      average={averageCounter / total}
+      positive={good / total * 100 + ' %'}
+      />
     </div>
   )
 }
