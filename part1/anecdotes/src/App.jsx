@@ -11,12 +11,11 @@ const DisplayAnecdote = (props) => {
   return(
     <div>
       {props.anecdotes}
+      <br></br>
+      has {props.points} votes
     </div>
   )
 }
-
-console.log(Math.floor(Math.random() * 7)); 
-
 
 const App = () => {
   const anecdotes = [
@@ -29,8 +28,17 @@ const App = () => {
     'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.',
     'The only way to go fast, is to go well.'
   ]
+
+  const vote = (anecdote) => {
+    const copy = [...points]
+    copy[anecdote] += 1
+    setPoints(copy)
+    
+  }
    
   const [selected, setSelected] = useState(0)
+  const [points, setPoints] = useState([...new Uint8Array(8)])
+  
 
   const setRandomValue = () => {
     setSelected(Math.floor(Math.random() * 7))
@@ -39,7 +47,8 @@ const App = () => {
   return (
     <div>
       
-      <DisplayAnecdote anecdotes={anecdotes[selected]} />
+      <DisplayAnecdote anecdotes={anecdotes[selected]} points={points[selected]} />
+      <Button onClick={() => vote(selected)} text="vote" />
       <Button onClick={setRandomValue} text="next anecdote" />
     </div>
   )
