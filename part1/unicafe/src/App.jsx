@@ -1,6 +1,8 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
 
+const StatisticsLine = props => <div>{props.text} {props.value}</div>
+
 const Statistics = (props) => {
   if (props.all === 0) {
     return(
@@ -11,12 +13,12 @@ const Statistics = (props) => {
   }
   return (
   <div>
-    <div>good {props.good} </div>
-    <div>neutral {props.neutral} </div>
-    <div>bad {props.bad} </div>
-    <div>all {props.all} </div>
-    <div>average {props.average} </div>
-    <div>positive {props.positive} </div>
+    <StatisticsLine text="good" value={props.good} />
+    <StatisticsLine text="neutral" value={props.neutral} />
+    <StatisticsLine text="bad" value={props.bad} />
+    <StatisticsLine text="all" value={props.all} />
+    <StatisticsLine text="average" value={props.average} />
+    <StatisticsLine text="positive" value={props.positive} />
   </div>
   )
 }
