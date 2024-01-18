@@ -1,5 +1,38 @@
 import { useState } from 'react'
 
+const Filter = (props) => {
+  const handleSearchChange = (event) => {
+    props.setNewSearch(event.target.value)
+  }
+
+  return(
+    <div>filter shown with <input value={props.newSearch}onChange={handleSearchChange}/></div>
+  )
+}
+
+const PersonForm = (props) => {
+  return(
+    <form onSubmit={props.addInformation}>
+        <div>name: <input value={props.newName}onChange={props.handleNameChange}/></div>
+        <div>number: <input value={props.newNumber}onChange={props.handleNumberChange}/></div>
+        <div><button type="submit">add</button></div>
+    </form>
+  )
+}
+
+const Persons = (props) => {
+  const personsToShow = props.persons.filter((person) =>
+   (person.name.toLowerCase().includes(props.newSearch.toLowerCase())))
+
+  return(
+    personsToShow.map(person =>
+      <p key={person.name}>
+        {person.name} {person.number}
+      </p>
+      )
+  )
+}
+
 const App = () => {
   const [persons, setPersons] = useState([
     { name: 'Arto Hellas', number: '040-123456', id: 1 },
@@ -27,36 +60,33 @@ const App = () => {
     }   
   }
 
-  const personsToShow = persons.filter((person) => (person.name.toLowerCase().includes(newSearch.toLowerCase())))
-
   const handleNameChange = (event) => {
     setNewName(event.target.value)
   }
   const handleNumberChange = (event) => {
     setNewNumber(event.target.value)
   }
-  const handleSearchChange = (event) => {
-    setNewSearch(event.target.value)
-  }
-
+  
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>filtern shown with <input value={newSearch}onChange={handleSearchChange}/></div>
-      <form onSubmit={addInformation}>
-        <div>name: <input value={newName}onChange={handleNameChange}/></div>
-        <div>number: <input value={newNumber}onChange={handleNumberChange}/></div>
-        <div><button type="submit">add</button></div>
-      </form>
-      <h2>Numbers</h2>
-      {personsToShow.map(person =>
-        <p key={person.name}>
-          {person.name} {person.number}
-        </p>
-        )}
+
+      <Filter newSearch={newSearch} setNewSearch={setNewSearch}/>
+
+      <h3>Add a new</h3>
+
+      <PersonForm 
+      addInformation={addInformation}
+      newName={newName} handleNameChange={handleNameChange}
+      newNumber={newNumber} handleNumberChange={handleNumberChange}
+      />
+
+      <h3>Numbers</h3>
+
+      <Persons persons={persons} newSearch={newSearch}/>
+
     </div>
   )
 } 
-
 
 export default App
