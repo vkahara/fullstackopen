@@ -13,11 +13,11 @@ const App = () => {
   
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        setPersons(response.data)
-      })
+    personService
+    .getAll
+    .then(initialPersons => {
+      setPersons(initialPersons)
+    })
   }, [])
 
   const addInformation = (event) => {
