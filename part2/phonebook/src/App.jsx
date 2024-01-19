@@ -14,10 +14,10 @@ const App = () => {
 
   useEffect(() => {
     personService
-    .getAll
-    .then(initialPersons => {
-      setPersons(initialPersons)
-    })
+      .getAll()
+      .then(initialPersons => {
+        setPersons(initialPersons)
+      })
   }, [])
 
   const addInformation = (event) => {
@@ -37,6 +37,17 @@ const App = () => {
           setNewNumber('')
         })
       }
+  }
+
+  const deleteInformation = person => {
+    if (window.confirm(`delete ${person.currentTarget.name}?`)) {
+    const personId = person.currentTarget.id
+    personService
+      .remove(personId)
+        .then(() => {
+          setPersons(persons.filter(n => n.id !== personId))
+        }) 
+    }
   }
   
   const handleNameChange = (event) => {
@@ -62,7 +73,7 @@ const App = () => {
 
       <h3>Numbers</h3>
 
-      <Persons persons={persons} newSearch={newSearch}/>
+      <Persons persons={persons} newSearch={newSearch} remove={deleteInformation}/>
 
     </div>
   )
