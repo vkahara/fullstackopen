@@ -1,48 +1,22 @@
-import { useState } from 'react'
-
-const Filter = (props) => {
-  const handleSearchChange = (event) => {
-    props.setNewSearch(event.target.value)
-  }
-
-  return(
-    <div>filter shown with <input value={props.newSearch}onChange={handleSearchChange}/></div>
-  )
-}
-
-const PersonForm = (props) => {
-  return(
-    <form onSubmit={props.addInformation}>
-        <div>name: <input value={props.newName}onChange={props.handleNameChange}/></div>
-        <div>number: <input value={props.newNumber}onChange={props.handleNumberChange}/></div>
-        <div><button type="submit">add</button></div>
-    </form>
-  )
-}
-
-const Persons = (props) => {
-  const personsToShow = props.persons.filter((person) =>
-   (person.name.toLowerCase().includes(props.newSearch.toLowerCase())))
-
-  return(
-    personsToShow.map(person =>
-      <p key={person.name}>
-        {person.name} {person.number}
-      </p>
-      )
-  )
-}
+import { useState, useEffect } from 'react'
+import axios from 'axios'
+import Filter from './components/Filter'
+import PersonForm from './components/PersonForm'
+import Persons from './components/Persons'
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '040-123456', id: 1 },
-    { name: 'Ada Lovelace', number: '39-44-5323523', id: 2 },
-    { name: 'Dan Abramov', number: '12-43-234345', id: 3 },
-    { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 }
-  ]) 
+  const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [newSearch, setNewSearch] = useState('')
+
+  useEffect(() => {
+    axios
+      .get('http://localhost:3001/persons')
+      .then(response => {
+        setPersons(response.data)
+      })
+  }, [])
 
   const addInformation = (event) => {
     event.preventDefault()
