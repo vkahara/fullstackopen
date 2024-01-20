@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
+import Notification from './components/Notification'
 import personService from './services/persons'
 
 const App = () => {
@@ -9,6 +10,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [newSearch, setNewSearch] = useState('')
+  const [userAddMessage, setUserAddMessage] = useState(null)
   
 
   useEffect(() => {
@@ -34,6 +36,12 @@ const App = () => {
             setPersons(persons.map(person => person.id !== updatedToBe.id ? person : returnedPerson))
             setNewName('')
             setNewNumber('')
+            setUserAddMessage(
+              `Changed  ${returnedPerson.name} number to ${returnedPerson.number}`
+            )
+            setTimeout(() => {
+              setUserAddMessage(null)
+            }, 3000)
           })
       } 
     } else {
@@ -43,7 +51,13 @@ const App = () => {
           setPersons(persons.concat(returnedPerson))
           setNewName('')
           setNewNumber('')
-        })
+          setUserAddMessage(
+            `Added ${returnedPerson.name}`
+          )
+          setTimeout(() => {
+            setUserAddMessage(null)
+          }, 3000)
+        })    
       }
   }
 
@@ -68,6 +82,8 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+
+      <Notification message={userAddMessage}/>
 
       <Filter newSearch={newSearch} setNewSearch={setNewSearch}/>
 
