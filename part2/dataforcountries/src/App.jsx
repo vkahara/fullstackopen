@@ -2,18 +2,53 @@ import axios from 'axios'
 import { useEffect, useState } from 'react'
 
 
-function App() {
+const ShowCountries = (props) => {
+  const countriesToShow = props.allCountries.filter((country) =>
+    (country.name.common.toLowerCase().includes(props.searchCountries.toLowerCase())))
+
+  console.log("countries length",countriesToShow.length);
+
+  if (countriesToShow.length == 1) {
+    const country = countriesToShow[0]
+    return(
+      <div>
+        <h2>{country.name.common}</h2>
+        <p>capital {country.capital}</p>
+        <p>area {country.area}</p>
+        <h3>languages</h3>
+        <ul>
+          {Object.entries(country.languages).map(([code, name]) => (
+            <li key={code}>{name}</li>
+          ))}
+        </ul>
+        <img src={country.flags.png}/>
+      </div>   
+    )
+
+  } else if (countriesToShow.length <= 10) {
+    return(
+      <div>
+      {countriesToShow.map(country =>
+        <p key={country.cca3}>
+          {country.name.common}
+        </p>
+        )}
+      </div>
+    )
+  } else {
+    return(
+      <p>Too many matches, specify another filter</p>
+    )
+  }
+}
+
+const App = () => {
   const [searchCountries, setSearchCountries] = useState('')
   const [allCountries, setAllCountries] = useState([])
 
   const handleCountriesChange = (event) => {
     setSearchCountries(event.target.value)
-    console.log('countries',searchCountries)
   }
-
-  const countriesToShow = allCountries.filter((country) =>
-    (country.name.common.toLowerCase().includes(searchCountries.toLowerCase())))
-
 
   useEffect(() => {
     axios
@@ -25,8 +60,6 @@ function App() {
     })
   }, [])
 
-  
-
   return (
     <div>
       <form>
@@ -34,12 +67,7 @@ function App() {
            <input value={searchCountries} onChange={handleCountriesChange}></input>
         </div>
       </form>
-
-      {countriesToShow.map(country =>
-      <p key={country.cca3}>
-        {country.name.common}
-      </p>
-      )}
+      <ShowCountries allCountries={allCountries} searchCountries={searchCountries}/>
 
     </div>
   )
