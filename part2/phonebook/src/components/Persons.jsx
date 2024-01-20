@@ -10,7 +10,6 @@ const Persons = (props) => {
         {person.name} {person.number} 
         <button id={person.id} name={person.name} onClick={props.remove} type="submit">delete</button>
       </p>
-      
       )
   )
 }
