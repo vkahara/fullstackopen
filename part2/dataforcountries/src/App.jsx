@@ -2,18 +2,40 @@ import axios from 'axios'
 import { useEffect, useState } from 'react'
 
 const CountryView = (props) => {
+  const [weather, setWeather] = useState({})
+  const api_key = import.meta.env.VITE_SOME_KEY
+  
+  useEffect(() => {
+    axios
+    .get(`https://api.openweathermap.org/data/2.5/weather?q=${props.country.capital}&appid=${api_key}&units=metric`)
+    .then(response => {
+      console.log("response", response.data.main.temp)
+      setWeather({
+        temp: response.data.main.temp,
+        wind: response.data.wind.speed,
+        icon: response.data.weather[0].icon
+      })
+    })
+  }, [])
+  
+  console.log("weather",weather)
+
   return(
     <div>
       <h2>{props.country.name.common}</h2>
-        <p>capital {props.country.capital}</p>
-        <p>area {props.country.area}</p>
-        <h3>languages</h3>
-        <ul>
-          {Object.entries(props.country.languages).map(([code, name]) => (
-            <li key={code}>{name}</li>
-          ))}
-        </ul>
-        <img src={props.country.flags.png}/>
+      <p>capital {props.country.capital}</p>
+      <p>area {props.country.area}</p>
+      <h3>languages</h3>
+      <ul>
+        {Object.entries(props.country.languages).map(([code, name]) => (
+          <li key={code}>{name}</li>
+        ))}
+      </ul>
+      <img src={props.country.flags.png}/>
+      <h2>Weather in {props.country.capital}</h2>
+      <p>temperature {weather.temp} Celcius</p>
+      <img src={`https://openweathermap.org/img/wn/${weather.icon}@2x.png`}/>
+      <p>wind {weather.wind}</p>
     </div>
   )
 }
