@@ -3,6 +3,7 @@ import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
 import Notification from './components/Notification'
+import ErrorNotification from './components/ErrorNotification'
 import personService from './services/persons'
 
 const App = () => {
@@ -11,6 +12,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [newSearch, setNewSearch] = useState('')
   const [userAddMessage, setUserAddMessage] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null)
   
 
   useEffect(() => {
@@ -42,6 +44,17 @@ const App = () => {
             setTimeout(() => {
               setUserAddMessage(null)
             }, 3000)
+          })
+          .catch(error => {
+            setPersons(persons.filter(n => n.id !== updatedToBe.id))
+            setNewName('')
+            setNewNumber('')
+            setErrorMessage(
+              `Information of ${updatedToBe.name} was already removed from server` 
+            )
+            setTimeout(() => {
+              setErrorMessage(null)
+            }, 5000)
           })
       } 
     } else {
@@ -84,6 +97,7 @@ const App = () => {
       <h2>Phonebook</h2>
 
       <Notification message={userAddMessage}/>
+      <ErrorNotification message={errorMessage} />
 
       <Filter newSearch={newSearch} setNewSearch={setNewSearch}/>
 
