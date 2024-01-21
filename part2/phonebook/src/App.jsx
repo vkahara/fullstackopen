@@ -29,6 +29,7 @@ const App = () => {
       name: newName,
       number: newNumber
     }
+    //find if new name already exists and offer to replace
     if (persons.some((person) => person.name === newName)) {
       const updatedToBe = persons.find((person) => person.name === newName)
       if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
