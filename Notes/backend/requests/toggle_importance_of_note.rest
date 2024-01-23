@@ -1,0 +1,7 @@
+PUT http://localhost:3001/api/notes/65af8bfe7b916bea159c700d
+Content-Type: application/json
+
+{
+    "content": "Progressive overload and sufficient calorie intake ensures muscle hypertrophy",
+    "important": true
+}
