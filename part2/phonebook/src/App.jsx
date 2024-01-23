@@ -71,8 +71,15 @@ const App = () => {
           setTimeout(() => {
             setUserAddMessage(null)
           }, 3000)
-        })    
+        })
+        .catch(error => {
+          setErrorMessage(error.response.data.error)
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 5000)
+        })  
       }
+      
   }
 
   const deleteInformation = person => {
