@@ -8,8 +8,6 @@ const logger = require('./utils/logger')
 const mongoose = require('mongoose')
 
 logger.info('connecting to', config.MONGODB_URI)
-console.log("NODE_ENV:", process.env.NODE_ENV);
-console.log("Database URI:", process.env.MONGODB_URI);
 
 
 mongoose.connect(config.MONGODB_URI)

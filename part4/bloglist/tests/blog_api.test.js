@@ -21,12 +21,20 @@ test('correct amount of blogs are returned as json', async () => {
 },100000)
 
 test('unique identifier is id', async () => {
+
   const blogsAtStart = await helper.blogsInDb()
   const blogToCheck = blogsAtStart[0]
-  const checkBlog = await api.get(`/api/blogs/${blogToCheck}`)
-  expect(checkBlog.id).toBeDefined()
+
+  const checkBlog = await api
+    .get(`/api/blogs/${blogToCheck.id}`)
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
+  
+  expect(checkBlog.body.id).toBeDefined()
 
 })
+
+
 
 afterAll(async () => {
   await mongoose.connection.close()
