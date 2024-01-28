@@ -34,6 +34,26 @@ test('unique identifier is id', async () => {
 
 })
 
+test('new post can be added', async () => {
+  const newBlog = {
+    title: 'test post test post',
+    author: 'masa',
+    url: 'https://www.audi.fi',
+    likes: 1000
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  const blogsAtEnd = await helper.notesInDb()
+  expect(blogsAtEnd).toHaveLength(helper.initialNotes.length + 1)
+
+  const contents = notesAtEnd.map(n => n.content)
+  expect(contents).toContaint('test post test post')
+})
 
 
 afterAll(async () => {
