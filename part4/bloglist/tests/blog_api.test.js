@@ -49,10 +49,10 @@ test('new post can be added', async () => {
     .expect('Content-Type', /application\/json/)
 
   const blogsAtEnd = await helper.notesInDb()
-  expect(blogsAtEnd).toHaveLength(helper.initialNotes.length + 1)
+  expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
 
-  const contents = notesAtEnd.map(n => n.content)
-  expect(contents).toContaint('test post test post')
+  const titles = notesAtEnd.map(n => n.title)
+  expect(titles).toContain('test post test post')
 })
 
 
