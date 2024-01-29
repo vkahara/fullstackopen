@@ -55,6 +55,23 @@ test('new post can be added', async () => {
   expect(titles).toContain('test post test post')
 })
 
+test('likeless entries likes default to zero', async () => {
+  const blogWithoutLikes = {
+    title: 'likeless blog',
+    author: "Valtteri Kähärä",
+    url: "https://github.com/vkahara",
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(blogWithoutLikes)
+    .expect(201)
+
+  const blogsAtEnd = await helper.blogsInDb()
+  const blog = blogsAtEnd.pop()
+  expect(blog.likes).toBe(0)
+})
+
 
 afterAll(async () => {
   await mongoose.connection.close()
