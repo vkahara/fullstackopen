@@ -72,6 +72,30 @@ test('likeless entries likes default to zero', async () => {
   expect(blog.likes).toBe(0)
 })
 
+test('if title or url missing 400', async () => {
+  const blogMissingTitle = {
+    author: "Valtteri Kähärä",
+    url: "https://github.com/vkahara",
+    likes: 123,
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(blogMissingTitle)
+    .expect(400)
+
+  const blogMissingUrl = {
+    title: "test test",
+    author: "Valtteri Kähärä",
+    likes: 123,
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(blogMissingUrl)
+    .expect(400)
+})
+
 
 afterAll(async () => {
   await mongoose.connection.close()
