@@ -116,6 +116,24 @@ test('delete blog 204 if id valid', async () => {
   expect(title).not.toContain(blogToDelete.title)
 })
 
+test('edit blog likes 200 if ok', async () => {
+  const blogsAtStart = await helper.blogsInDb()
+  const blogToEdit = blogsAtStart[0]
+
+  const updatedBlog = {
+    likes: 1000
+  }
+
+  await api
+    .put(`/api/blogs/${blogToEdit.id}`)
+    .send(updatedBlog)
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
+
+  const blogsAtEnd = await helper.blogsInDb()
+  expect(blogsAtEnd[0].likes).toBe(updatedBlog.likes)
+})
+
 afterAll(async () => {
   await mongoose.connection.close()
 })

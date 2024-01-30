@@ -1,0 +1,9 @@
+PUT http://localhost:3001/api/blogs/65b8c5ab6295ca82921e6ff9
+Content-Type: application/json
+
+{
+    "title": "test test test",
+    "author": "Valtteri Kähärä",
+    "url": "https://github.com/vkahara",
+    "likes": 123
+}
