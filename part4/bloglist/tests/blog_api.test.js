@@ -4,6 +4,7 @@ const helper = require('./test_helper.js')
 const app = require('../app')
 const api = supertest(app)
 const Blog = require('../models/blog')
+const blog = require('../models/blog')
 
 beforeEach(async () => {
   await Blog.deleteMany({})
@@ -96,6 +97,24 @@ test('if title or url missing 400', async () => {
     .expect(400)
 })
 
+test('delete blog 204 if id valid', async () => {
+  const blogsAtStart = await helper.blogsInDb()
+  const blogToDelete = blogsAtStart[0]
+
+  await api
+    .delete(`/api/blogs/${blogToDelete.id}`)
+    .expect(204)
+
+  const blogsAtEnd = await helper.blogsInDb()
+
+  expect(blogsAtEnd).toHaveLength(
+    helper.initialBlogs.length - 1
+  )
+
+  const title = blogsAtEnd.map(r => r.title)
+
+  expect(title).not.toContain(blogToDelete.title)
+})
 
 afterAll(async () => {
   await mongoose.connection.close()
