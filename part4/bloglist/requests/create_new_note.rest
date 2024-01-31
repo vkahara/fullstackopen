@@ -2,8 +2,8 @@ POST http://localhost:3001/api/blogs
 Content-Type: application/json
 
 {
-    "title": "test test test",
-    "author": "Valtteri Kähärä",
+    "title": "testi",
+    "author": "Valtteri kljjKähärä",
     "url": "https://github.com/vkahara",
     "likes": 226
 }
