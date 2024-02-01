@@ -1,8 +1,8 @@
 POST http://localhost:3001/api/notes
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InZrYWhhcmEiLCJpZCI6IjY1YmE5MzQ3MGRkZDhjM2MyOWQzMGI2OSIsImlhdCI6MTcwNjc3NDM4Mn0.3fJMsWjZzJZBBThNhzt1uzZlzH0N8S5GdLcfjXK_aj0
 
 {
-    "content": "palo auto hirviö auto valtteri",
-    "important": true,
-    "userId": "65ba93470ddd8c3c29d30b69"
+    "content": "monster energy eat fresh",
+    "important": true
 }
