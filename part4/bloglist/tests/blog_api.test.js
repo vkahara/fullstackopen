@@ -4,6 +4,8 @@ const helper = require('./test_helper.js')
 const app = require('../app')
 const api = supertest(app)
 const Blog = require('../models/blog')
+const bcrypt = require('bcrypt')
+const User = require('../models/user')
 
 beforeEach(async () => {
   await Blog.deleteMany({})
@@ -131,6 +133,40 @@ test('edit blog likes 200 if ok', async () => {
 
   const blogsAtEnd = await helper.blogsInDb()
   expect(blogsAtEnd[0].likes).toBe(updatedBlog.likes)
+})
+
+
+describe('when there is initially one user in db', () => {
+  beforeEach(async () => {
+    await User.deleteMany({})
+
+    const passwordHash = await bcrypt.hash('sekret', 10)
+    const user = new User({ username: 'root', passwordHash })
+
+    await user.save()
+  })
+
+  test('cannot post invalid user', async () => {
+    const usersAtStart = await helper.usersInDb()
+
+    const invalidUser = {
+      username: 'moimoi',
+      Name: 'Moikka moi',
+      password: '12'
+    }
+
+    const result = await api
+      .post('/api/users')
+      .send(invalidUser)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+    
+    expect(result.body.error).toContain('password must be at least 3 characters long')
+
+    const usersAtEnd = await helper.usersInDb()
+    expect(usersAtEnd).toEqual(usersAtStart)
+  })
+
 })
 
 afterAll(async () => {
