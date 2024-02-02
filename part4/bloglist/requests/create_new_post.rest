@@ -1,10 +1,11 @@
 POST http://localhost:3001/api/blogs
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InZrYWhhcmEiLCJpZCI6IjY1YmNiZGMzZGM2NzQzOTgwMzVlMmVhZCIsImlhdCI6MTcwNjg3MjAxMH0.SUUtKJSMfVsL5NkfmL_nWBpleDwUdrg79hi2tcYfXdA
 
 {
-    "title": "tuli rekka ja hirviö rekka valtteri",
-    "author": "Valtteri Kähärä",
+    "title": "let him cook",
+    "author": "vallufdjaskl",
     "url": "https://github.com/vkahara",
-    "likes": 420,
+    "likes": 412320,
     "userId": "65bcbdc3dc674398035e2ead"
 }
