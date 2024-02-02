@@ -1,0 +1,10 @@
+POST http://localhost:3001/api/blogs
+Content-Type: application/json
+
+{
+    "title": "tuli rekka ja hirviö rekka valtteri",
+    "author": "Valtteri Kähärä",
+    "url": "https://github.com/vkahara",
+    "likes": 420,
+    "userId": "65bcbdc3dc674398035e2ead"
+}
