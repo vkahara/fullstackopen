@@ -1,9 +1,9 @@
 POST http://localhost:3001/api/blogs
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFhbmtrYSIsImlkIjoiNjViZTEyOTIyYWIxNTMxMjJjNmRkYjY3IiwiaWF0IjoxNzA2OTU1NDI2fQ.JQbuItRsgHgzK85k4yyn4UymW2nJCBn-2JpPvyAjLN8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFhbmtrYSIsImlkIjoiNjViZTEyOTIyYWIxNTMxMjJjNmRkYjY3IiwiaWF0IjoxNzA2OTczMzc0fQ.7yDy3WVToCOrdvtmS5G_a628hzikZVTclSOLzDarxY0
 
 {
-    "title": "aku ankan raha huoli",
+    "title": "newblog newblog",
     "author": "aku",
     "url": "https://akuankka.fi/",
     "likes": 412320,
