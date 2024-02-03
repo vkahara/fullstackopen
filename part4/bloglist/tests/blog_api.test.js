@@ -7,10 +7,27 @@ const Blog = require('../models/blog')
 const bcrypt = require('bcrypt')
 const User = require('../models/user')
 
+let token
+let user
+
+beforeAll(async () => {
+  await api
+    .post('/api/users')
+    .send({ username: 'testuser', password: 'testpassword' })
+
+  const response = await api
+    .post('/api/login')
+    .send({ username: 'testuser', password: 'testpassword' })
+
+  token = response.body.token
+
+  user = await User.findOne({ username: 'testuser' });
+})
+
 beforeEach(async () => {
   await Blog.deleteMany({})
   for (let blog of helper.initialBlogs) {
-    let blogObject = new Blog(blog)
+    let blogObject = new Blog({ ...blog, user: user._id })
     await blogObject.save()
   }
 }, 100000)
@@ -41,11 +58,13 @@ test('new post can be added', async () => {
     title: 'test post test post',
     author: 'masa',
     url: 'https://www.audi.fi',
-    likes: 1000
+    likes: 1000,
+    userId: "65be12112ab153122c6ddb5e"
   }
 
   await api
     .post('/api/blogs')
+    .set('Authorization', `Bearer ${token}`)
     .send(newBlog)
     .expect(201)
     .expect('Content-Type', /application\/json/)
@@ -66,6 +85,7 @@ test('likeless entries likes default to zero', async () => {
 
   await api
     .post('/api/blogs')
+    .set('Authorization', `Bearer ${token}`)
     .send(blogWithoutLikes)
     .expect(201)
 
@@ -83,6 +103,7 @@ test('if title or url missing 400', async () => {
 
   await api
     .post('/api/blogs')
+    .set('Authorization', `Bearer ${token}`)
     .send(blogMissingTitle)
     .expect(400)
 
@@ -94,6 +115,7 @@ test('if title or url missing 400', async () => {
 
   await api
     .post('/api/blogs')
+    .set('Authorization', `Bearer ${token}`)
     .send(blogMissingUrl)
     .expect(400)
 })
@@ -102,8 +124,11 @@ test('delete blog 204 if id valid', async () => {
   const blogsAtStart = await helper.blogsInDb()
   const blogToDelete = blogsAtStart[0]
 
+  console.log("blogtodelete", blogToDelete)
+
   await api
     .delete(`/api/blogs/${blogToDelete.id}`)
+    .set('Authorization', `Bearer ${token}`)
     .expect(204)
 
   const blogsAtEnd = await helper.blogsInDb()

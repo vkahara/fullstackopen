@@ -7,6 +7,7 @@ const initialBlogs  = [
     author: "Valtteri Kähärä",
     url: "https://github.com/vkahara",
     likes: 1337
+    
   },
   {
     title: 'rekka-auto suolakurkku',
