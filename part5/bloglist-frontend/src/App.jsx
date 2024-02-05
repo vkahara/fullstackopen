@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
+import Notification from './components/Notification'
+import ErrorNotification from './components/ErrorNotification'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -11,6 +13,8 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
+  const [message, setMessage] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null)
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -42,7 +46,19 @@ const App = () => {
         setNewTitle('')
         setNewAuthor('')
         setNewUrl('')
+        setMessage(
+          `Added new blog ${returnedBlog.title} by ${returnedBlog.author}`
+        )
+        setTimeout(() => {
+          setMessage(null)
+        }, 3000)
       })
+      .catch(
+        setErrorMessage(
+          'Error adding new blog'
+        )
+      )
+      
   }
 
   const handleLogin = async (event) => {
@@ -60,7 +76,10 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      console.log('error', exception)
+      setErrorMessage('Wrong username or password')
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
     }
   }
 
@@ -132,6 +151,8 @@ const App = () => {
 
   return (
     <div>
+      <Notification message={message} />
+      <ErrorNotification message={errorMessage} />
       {user === null && loginForm()}
       {user !== null && showBlogs()}
       
