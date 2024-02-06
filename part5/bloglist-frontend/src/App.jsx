@@ -53,11 +53,12 @@ const App = () => {
           setMessage(null)
         }, 3000)
       })
-      .catch(
-        setErrorMessage(
-          'Error adding new blog'
-        )
-      )
+      .catch(error => {
+        setErrorMessage('Error adding new blog')
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 3000)
+      })
       
   }
 
