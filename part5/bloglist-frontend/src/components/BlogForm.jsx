@@ -9,6 +9,7 @@ const BlogForm = ({
 }) => {
   return (
     <div>
+      <h2>create new</h2>
       <form onSubmit={addBlog}>
         <div>title:<input type='text' value={newTitle} onChange={(event) => setNewTitle(event.target.value)}/></div>
         <div>author:<input type='text' value={newAuthor} onChange={(event) => setNewAuthor(event.target.value)}/></div>

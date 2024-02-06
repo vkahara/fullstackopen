@@ -5,6 +5,7 @@ import ErrorNotification from './components/ErrorNotification'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import BlogForm from './components/BlogForm'
+import Togglable from './components/Togglable'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -124,6 +125,7 @@ const App = () => {
     </div>
   )
 
+  /*
   const blogForm = () => {
     const hideWhenVisible = { display: blogVisible ? 'none' : '' }
     const showWhenVisible = { display: blogVisible ? '' : 'none' }
@@ -148,7 +150,7 @@ const App = () => {
       </div>
     )
   }
-
+*/
   const showBlogs = () => (
     <div>
       <h2>blogs</h2>
@@ -156,11 +158,21 @@ const App = () => {
         {user.name} logged in
         <button onClick={ handleLogout }>logout</button>
       </p>
-      <h2>create new</h2>
-      {blogForm()}
-        {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} />
-        )}
+      
+      <Togglable buttonLabel='new blog'>
+        <BlogForm
+            addBlog={addBlog}
+            newTitle={newTitle}
+            newAuthor={newAuthor}
+            newUrl={newUrl}
+            setNewTitle={setNewTitle}
+            setNewAuthor={setNewAuthor}
+            setNewUrl={setNewUrl}
+            />
+      </Togglable>
+      <p>{blogs.map(blog =>
+        <Blog key={blog.id} blog={blog} />
+      )}</p>
     </div>
   )
 
@@ -170,6 +182,7 @@ const App = () => {
       <ErrorNotification message={errorMessage} />
       {user === null && loginForm()}
       {user !== null && showBlogs()}
+      
       
     </div>
   )
