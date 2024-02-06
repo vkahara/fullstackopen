@@ -4,6 +4,7 @@ import Notification from './components/Notification'
 import ErrorNotification from './components/ErrorNotification'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import BlogForm from './components/BlogForm'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -133,13 +134,15 @@ const App = () => {
           <button onClick={() => setBlogVisible(true)}>new note</button>
         </div>
         <div style={showWhenVisible}>
-          <form onSubmit={addBlog}>
-            <div>title:<input type='text' value={newTitle} onChange={(event) => setNewTitle(event.target.value)}/></div>
-            <div>author:<input type='text' value={newAuthor} onChange={(event) => setNewAuthor(event.target.value)}/></div>
-            <div>url:<input type='text' value={newUrl} onChange={(event) => setNewUrl(event.target.value)}/></div>
-
-            <button type="submit">create</button>
-          </form>
+          <BlogForm
+          addBlog={addBlog}
+          newTitle={newTitle}
+          newAuthor={newAuthor}
+          newUrl={newUrl}
+          setNewTitle={setNewTitle}
+          setNewAuthor={setNewAuthor}
+          setNewUrl={setNewUrl}
+          />
           <button onClick={() => setBlogVisible(false)}>cancel</button>
         </div>
       </div>

@@ -1,4 +1,4 @@
-const BlogForm = (
+const BlogForm = ({
   addBlog,
   newTitle,
   newAuthor,
@@ -6,7 +6,8 @@ const BlogForm = (
   setNewTitle,
   setNewAuthor,
   setNewUrl
-  ) => {(
+}) => {
+  return (
     <div>
       <form onSubmit={addBlog}>
         <div>title:<input type='text' value={newTitle} onChange={(event) => setNewTitle(event.target.value)}/></div>
@@ -16,7 +17,7 @@ const BlogForm = (
         <button type="submit">create</button>
       </form>
     </div>
-    )
+  )
 }
 
 export default BlogForm
