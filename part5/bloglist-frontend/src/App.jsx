@@ -15,6 +15,7 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [message, setMessage] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
+  const [blogVisible, setBlogVisible] = useState(false)
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -122,18 +123,28 @@ const App = () => {
     </div>
   )
 
-  const blogForm = () => (
-    <div>
-      <form onSubmit={addBlog}>
+  const blogForm = () => {
+    const hideWhenVisible = { display: blogVisible ? 'none' : '' }
+    const showWhenVisible = { display: blogVisible ? '' : 'none' }
 
-        <div>title:<input type='text' value={newTitle} onChange={(event) => setNewTitle(event.target.value)}/></div>
-        <div>author:<input type='text' value={newAuthor} onChange={(event) => setNewAuthor(event.target.value)}/></div>
-        <div>url:<input type='text' value={newUrl} onChange={(event) => setNewUrl(event.target.value)}/></div>
+    return(
+      <div>
+        <div style={hideWhenVisible}>
+          <button onClick={() => setBlogVisible(true)}>new note</button>
+        </div>
+        <div style={showWhenVisible}>
+          <form onSubmit={addBlog}>
+            <div>title:<input type='text' value={newTitle} onChange={(event) => setNewTitle(event.target.value)}/></div>
+            <div>author:<input type='text' value={newAuthor} onChange={(event) => setNewAuthor(event.target.value)}/></div>
+            <div>url:<input type='text' value={newUrl} onChange={(event) => setNewUrl(event.target.value)}/></div>
 
-        <button type="submit">create</button>
-      </form>
-    </div>
-  )
+            <button type="submit">create</button>
+          </form>
+          <button onClick={() => setBlogVisible(false)}>cancel</button>
+        </div>
+      </div>
+    )
+  }
 
   const showBlogs = () => (
     <div>
