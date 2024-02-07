@@ -55,6 +55,15 @@ const App = () => {
         }, 3000)
       })
   }
+
+  const likeBlog = (updateObject) => {
+
+    blogService
+      .like(updateObject)
+        .then(returnedBlog => {
+          setBlogs(blogs.map(blog => blog.id === returnedBlog.id ? returnedBlog : blog))
+        })
+  }
   
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -133,7 +142,7 @@ const App = () => {
       </p>
       {blogForm()}
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} like={likeBlog}/>
       )}
     </div>
   )
