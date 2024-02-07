@@ -18,6 +18,7 @@ const Blog = ({ blog }) => {
     borderWidth: 1,
     marginBottom: 5
   }
+
   
   return (
     <div style={blogStyle}>
@@ -38,4 +39,5 @@ const Blog = ({ blog }) => {
     </div>  
   )
 }
+
 export default Blog

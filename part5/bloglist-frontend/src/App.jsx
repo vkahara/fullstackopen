@@ -35,9 +35,13 @@ const App = () => {
     blogService
       .create(blogObject)
         .then(returnedBlog => {
-        setBlogs(blogs.concat(returnedBlog))
+          const blogWithUserInfo = {
+              ...returnedBlog,
+              user: { username: user.username, name: user.name} 
+            }
+        setBlogs(blogs.concat(blogWithUserInfo))
         setMessage(
-          `Added new blog ${returnedBlog.title} by ${returnedBlog.author}`
+          `Added new blog ${blogWithUserInfo.title} by ${blogWithUserInfo.author}`
         )
         setTimeout(() => {
           setMessage(null)
