@@ -140,8 +140,6 @@ const App = () => {
       <ErrorNotification message={errorMessage} />
       {user === null && loginForm()}
       {user !== null && showBlogs()}
-      
-      
     </div>
   )
 }
