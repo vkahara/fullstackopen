@@ -61,11 +61,7 @@ const App = () => {
     blogService
       .like(updateObject)
         .then(returnedBlog => {
-          const blogWithUserInfo = {
-            ...returnedBlog,
-            user: { username: user.username, name: user.name} 
-          }
-          setBlogs(blogs.map(blog => blog.id === blogWithUserInfo.id ? blogWithUserInfo : blog))
+          setBlogs(blogs.map(blog => blog.id === returnedBlog.id ? returnedBlog : blog))
         })
   }
   
