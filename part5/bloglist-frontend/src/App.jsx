@@ -37,7 +37,7 @@ const App = () => {
         .then(returnedBlog => {
           const blogWithUserInfo = {
               ...returnedBlog,
-              user: { username: user.username, name: user.name} 
+              user: { username: user.username, name: user.name, id: user.id } 
             }
         setBlogs(blogs.concat(blogWithUserInfo))
         setMessage(
@@ -57,11 +57,19 @@ const App = () => {
   }
 
   const likeBlog = (updateObject) => {
-
     blogService
       .like(updateObject)
         .then(returnedBlog => {
           setBlogs(blogs.map(blog => blog.id === returnedBlog.id ? returnedBlog : blog))
+        })
+  }
+
+  const removeBlog = (removeId) => {
+    blogService
+      .remove(removeId)
+        .then(() => {
+          const updatedBlogs = blogs.filter(blog => blog.id !== removeId)
+          setBlogs(updatedBlogs)
         })
   }
   
@@ -69,7 +77,7 @@ const App = () => {
     event.preventDefault()
     try {
       const user = await loginService.login({
-        username, password,
+        username, password
       })
 
       window.localStorage.setItem(
@@ -146,7 +154,7 @@ const App = () => {
       </p>
       {blogForm()}
       {sortBlogsByLikes(blogs).map(blog =>
-        <Blog key={blog.id} blog={blog} like={likeBlog}/>
+        <Blog key={blog.id} blog={blog} like={likeBlog} user={user} remove={removeBlog}/>
       )}
     </div>
   )
