@@ -18,7 +18,7 @@ const App = () => {
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
-    )  
+    )
   }, [])
 
   useEffect(() => {
@@ -34,11 +34,11 @@ const App = () => {
     blogFormRef.current.toggleVisibility()
     blogService
       .create(blogObject)
-        .then(returnedBlog => {
-          const blogWithUserInfo = {
-              ...returnedBlog,
-              user: { username: user.username, name: user.name, id: user.id } 
-            }
+      .then(returnedBlog => {
+        const blogWithUserInfo = {
+          ...returnedBlog,
+          user: { username: user.username, name: user.name, id: user.id }
+        }
         setBlogs(blogs.concat(blogWithUserInfo))
         setMessage(
           `Added new blog ${blogWithUserInfo.title} by ${blogWithUserInfo.author}`
@@ -49,7 +49,7 @@ const App = () => {
       })
       .catch(error => {
         setErrorMessage('Error adding new blog')
-        console.log("error",error);
+        console.log('error', error)
         setTimeout(() => {
           setErrorMessage(null)
         }, 3000)
@@ -59,20 +59,20 @@ const App = () => {
   const likeBlog = (updateObject) => {
     blogService
       .like(updateObject)
-        .then(returnedBlog => {
-          setBlogs(blogs.map(blog => blog.id === returnedBlog.id ? returnedBlog : blog))
-        })
+      .then(returnedBlog => {
+        setBlogs(blogs.map(blog => blog.id === returnedBlog.id ? returnedBlog : blog))
+      })
   }
 
   const removeBlog = (removeId) => {
     blogService
       .remove(removeId)
-        .then(() => {
-          const updatedBlogs = blogs.filter(blog => blog.id !== removeId)
-          setBlogs(updatedBlogs)
-        })
+      .then(() => {
+        const updatedBlogs = blogs.filter(blog => blog.id !== removeId)
+        setBlogs(updatedBlogs)
+      })
   }
-  
+
   const handleLogin = async (event) => {
     event.preventDefault()
     try {
@@ -105,30 +105,30 @@ const App = () => {
       console.log('error', exception)
     }
   }
-  
+
   const loginForm = () => (
     <div>
       <h2>log in to application</h2>
       <form onSubmit={handleLogin}>
-          <div>
+        <div>
             username
-            <input
+          <input
             type='text'
             value={username}
             name='Username'
             onChange={({ target }) => setUsername(target.value)}
-            />
-          </div>
-          <div>
+          />
+        </div>
+        <div>
             password
-            <input
+          <input
             type='password'
             value={password}
             name='Password'
             onChange={({ target }) => setPassword(target.value)}
-            />
-          </div>
-          <button type='submit'>login</button>
+          />
+        </div>
+        <button type='submit'>login</button>
       </form>
     </div>
   )
@@ -137,12 +137,12 @@ const App = () => {
 
   const blogForm = () => (
     <Togglable buttonLabel='new blog' ref={blogFormRef}>
-        <BlogForm createBlog={addBlog}/>
+      <BlogForm createBlog={addBlog}/>
     </Togglable>
   )
 
   const sortBlogsByLikes = (blogs) => {
-    return blogs.slice().sort((a, b) => b.likes - a.likes);
+    return blogs.slice().sort((a, b) => b.likes - a.likes)
   }
 
   const showBlogs = () => (

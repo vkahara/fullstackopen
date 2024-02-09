@@ -23,7 +23,7 @@ const create = async newObject => {
 
 const like = async updateObject => {
   const config = {
-    headers: { Authorization: token}
+    headers: { Authorization: token }
   }
 
   const url = `${baseUrl}/${updateObject.id}`
@@ -34,7 +34,7 @@ const like = async updateObject => {
 
 const remove = async removeId => {
   const config = {
-    headers: { Authorization: token}
+    headers: { Authorization: token }
   }
 
   const url = `${baseUrl}/${removeId}`
