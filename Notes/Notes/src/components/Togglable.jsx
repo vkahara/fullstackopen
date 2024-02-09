@@ -1,8 +1,8 @@
-import { useState, forwardRef, useImperativeHandle } from 'react'
+import React, { useState, forwardRef, useImperativeHandle } from 'react'
+import PropTypes from 'prop-types'
 
 
-// eslint-disable-next-line react/display-name
-const Togglable = forwardRef((props, refs) => {
+const Togglable = React.forwardRef((props, ref) => {
   const [visible, setVisible] = useState(false)
 
   const hideWhenVisible = { display: visible ? 'none' : '' }
@@ -13,7 +13,7 @@ const Togglable = forwardRef((props, refs) => {
   }
 
 
-  useImperativeHandle(refs, () => {
+  useImperativeHandle(ref, () => {
     return {
       toggleVisibility
     }
@@ -32,5 +32,10 @@ const Togglable = forwardRef((props, refs) => {
   )
 
 })
+
+Togglable.propTypes = {
+  buttonLabel: PropTypes.string.isRequired
+}
+Togglable.displayName = 'Togglable'
 
 export default Togglable
