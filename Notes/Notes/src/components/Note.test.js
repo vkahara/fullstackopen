@@ -10,13 +10,9 @@ test('renders content', () => {
     important: true
   }
 
-  const mockHandler = jest.fn()
-
   render(<Note note={note} />)
 
   const element = screen.getByText('Component testing is done with react-testing-library')
-
-  screen.debug(element)
 
   expect(element).toBeDefined()
 })
