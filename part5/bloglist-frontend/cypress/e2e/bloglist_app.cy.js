@@ -90,5 +90,24 @@ describe('Blog app', function() {
       cy.contains('remove').should('not.exist')
 
     })
+
+    it.only('blogs are ordered by likes', function() {
+      cy.createBlog({ title: 'least likes', author: 'least author', url: 'http://example.com' })
+      cy.createBlog({ title: 'most likes', author: 'most author', url: 'http://example.com' })
+
+      cy.get('.blog').eq(0).should('contain', 'least likes')
+      cy.get('.blog').eq(1).should('contain', 'most likes')
+
+      cy.contains('most likes').parent().as('blogPost')
+
+      cy.get('@blogPost').contains('view').click()
+      cy.get('@blogPost').find('.likeButton').click()
+      cy.get('@blogPost').contains('likes 1')
+      cy.get('@blogPost').find('.likeButton').click()
+      cy.get('@blogPost').contains('likes 2')
+
+      cy.get('.blog').eq(0).should('contain', 'most likes')
+      cy.get('.blog').eq(1).should('contain', 'least likes')
+    })
   })
 })
