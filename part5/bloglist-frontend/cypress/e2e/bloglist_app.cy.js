@@ -36,4 +36,23 @@ describe('Blog app', function() {
       cy.contains('Valtteri Kähärä logged in').should('not.exist')
     })
   })
+
+  describe('When logged in', function() {
+    beforeEach(function() {
+      cy.login({ username: 'vkahara', password: 'labra123' })
+    })
+
+    it('A blog can be created', function() {
+      cy.contains('new blog').click()
+      cy.get('#title').type('test title')
+      cy.get('#author').type('test author')
+      cy.get('#url').type('test url')
+      cy.get('#create').click()
+
+      cy.get('.message')
+        .should('contain', 'Added new blog test title by test author')
+
+      cy.contains('test title test author')
+    })
+  })
 })
