@@ -63,12 +63,31 @@ describe('Blog app', function() {
       cy.contains('likes 1')
     })
 
-    it.only('user can delete own blog', function() {
+    it('user can delete own blog', function() {
       cy.createBlog({ title: 'test title', author: 'test author', url: 'http://example.com' })
       cy.contains('view').click()
 
       cy.contains('remove').click()
       cy.contains('test title test author').should('not.exist')
+
+    })
+
+    it('only creator can see delete button no one else', function() {
+      cy.createBlog({ title: 'test title', author: 'test author', url: 'http://example.com' })
+      cy.contains('view').click()
+      cy.contains('remove')
+      cy.contains('logout').click()
+
+      const secondUser = {
+        name: 'Aku Ankka',
+        username: 'aankka',
+        password: 'labra123'
+      }
+      cy.request('POST', 'http://localhost:3003/api/users', secondUser)
+      cy.login({ username: 'aankka', password: 'labra123' })
+
+      cy.contains('view').click()
+      cy.contains('remove').should('not.exist')
 
     })
   })
