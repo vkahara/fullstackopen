@@ -54,5 +54,13 @@ describe('Blog app', function() {
 
       cy.contains('test title test author')
     })
+
+    it.only('user can like blog', function() {
+      cy.createBlog({ title: 'test title', author: 'test author', url: 'http://example.com' })
+      cy.contains('view').click()
+      cy.contains('likes 0')
+      cy.contains('like').click()
+      cy.contains('likes 1')
+    })
   })
 })
