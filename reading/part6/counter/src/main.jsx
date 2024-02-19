@@ -1,15 +1,6 @@
-import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { createStore } from 'redux'
-
-const noteReducer = (state = [], action) => {
-  if (action.type === 'NEW_NOTE') {
-    state.push(action.payload)
-    return state
-  }
-
-  return state
-}
+import noteReducer from './reducers/noteReducer'; // Import the reducer
 
 const store = createStore(noteReducer)
 
@@ -27,6 +18,13 @@ store.dispatch({
   payload: {
     content: 'state changes are made with actions',
     important: false,
+    id: 2
+  }
+})
+
+store.dispatch({
+  type: 'TOGGLE_IMPORTANCE',
+  payload: {
     id: 2
   }
 })
