@@ -38,7 +38,6 @@ const reducer = (state = initialState, action) => {
     default:
       return state
   }
-
 }
 
 export const addVote = (id) => {
