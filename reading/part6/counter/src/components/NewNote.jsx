@@ -8,6 +8,8 @@ const NewNote = () => {
   const addNote = (event) => {
     event.preventDefault()
     const content = event.target.note.value
+    console.log("ccontent", content)
+    console.log("event target", event.target);
     event.target.note.value = ''
 
     dispatch(createNote(content))
