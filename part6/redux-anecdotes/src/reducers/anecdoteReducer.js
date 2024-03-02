@@ -25,10 +25,21 @@ const anecdoteSlice = createSlice({
   name: 'vote',
   initialState,
   reducers: {
-
+    voteAnecdote(state, action) {
+      const id = action.payload
+      const anecdoteToVote = state.find(n => n.id === id)
+      const changedAnecdote = { 
+        ...anecdoteToVote, 
+        votes: anecdoteToVote.votes + 1
+      }
+      return state.map(anecdote =>
+        anecdote.id !== id ? anecdote : changedAnecdote 
+      )
+    }
   }
 })
 
+/*
 const reducer = (state = initialState, action) => {
   switch(action.type) {
     case 'VOTE': {
@@ -49,6 +60,7 @@ const reducer = (state = initialState, action) => {
       return state
   }
 }
+*/
 
 export const addVote = (id) => {
   return {
@@ -68,4 +80,5 @@ export const createAnecdote = (content) => {
   }
 }
 
-export default reducer
+export const { voteAnecdote } = anecdoteSlice.actions
+export default anecdoteSlice.reducer
