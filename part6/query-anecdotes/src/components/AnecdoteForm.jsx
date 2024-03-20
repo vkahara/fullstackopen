@@ -14,7 +14,14 @@ const AnecdoteForm = () => {
       dispatch({
         type: 'SET_NOTIFICATION',
         payload: message
-      });
+      })
+      setTimeout(() => dispatch({ type: 'CLEAR_NOTIFICATION' }), 5000)
+    },
+    onError: (error) => {
+      dispatch({
+        type: 'SET_NOTIFICATION',
+        payload: error.response.data.error
+      })
       setTimeout(() => dispatch({ type: 'CLEAR_NOTIFICATION' }), 5000)
     }
     
@@ -23,6 +30,16 @@ const AnecdoteForm = () => {
   const onCreate = (event) => {
     event.preventDefault()
     const content = event.target.anecdote.value
+
+    if (content.length < 5) {
+      dispatch({
+        type: 'SET_NOTIFICATION',
+        payload: 'too short anecdote, must have length 5 or more'
+      })
+      setTimeout(() => dispatch({ type: 'CLEAR_NOTIFICATION' }), 5000)
+      return
+    }
+
     event.target.anecdote.value = ''
     newAnecdoteMutation.mutate({ content, votes: 0 })
     
