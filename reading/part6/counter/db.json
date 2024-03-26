@@ -2,7 +2,7 @@
   "notes": [
     {
       "content": "the app state is in redux store",
-      "important": true,
+      "important": false,
       "id": "1"
     },
     {
@@ -18,12 +18,32 @@
     {
       "id": "4471",
       "content": "adjsk",
-      "important": false
+      "important": true
     },
     {
       "id": "31c3",
       "content": "vallu korjas !",
       "important": false
+    },
+    {
+      "id": "10c5",
+      "content": "testi",
+      "important": true
+    },
+    {
+      "id": "cbf2",
+      "content": "query!!!!!!!!!!!!!!!!!!!",
+      "important": true
+    },
+    {
+      "id": "031c",
+      "content": "new note new note       ",
+      "important": true
+    },
+    {
+      "id": "2619",
+      "content": "",
+      "important": true
     }
   ]
 }
