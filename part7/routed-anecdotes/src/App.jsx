@@ -11,13 +11,15 @@ const Menu = (props) => {
   return (
     <Router>
       <div>
-        <Link style={padding}>anecdotes</Link>
-        <Link style={padding}>create new</Link>
-        <Link style={padding}>about</Link>
+        <Link style={padding} to="/">anecdotes</Link>
+        <Link style={padding} to="create">create new</Link>
+        <Link style={padding} to="about">about</Link>
       </div>
 
       <Routes>
         <Route path="/" element={<AnecdoteList anecdotes={props.anecdotes} />} />
+        <Route path="/create" element={<CreateNew addNew={props.addNew} />} />
+        <Route path="/about" element={<About />} />
       </Routes>
 
     </Router>
@@ -137,10 +139,7 @@ const App = () => {
   return (
     <div>
       <h1>Software anecdotes</h1>
-      <Menu anecdotes={anecdotes}/>
-      
-      <About />
-      <CreateNew addNew={addNew} />
+      <Menu anecdotes={anecdotes} addNew={addNew}/>
       <Footer />
     </div>
   )
