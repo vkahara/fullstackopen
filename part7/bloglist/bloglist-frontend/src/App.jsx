@@ -47,6 +47,13 @@ const App = () => {
     },
   })
 
+  const likeBlogMutation = useMutation({
+    mutationFn: blogToLike => blogService.like(blogToLike),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['blogs'])
+    },
+  })
+
   const { data: blogs, isLoading } = useQuery({
     queryKey: ['blogs'],
     queryFn: () => blogService.getAll(),
@@ -71,15 +78,10 @@ const App = () => {
     newBlogMutation.mutate(blogWithUserInfo)
   }
 
-  /*
-  const likeBlog = updateObject => {
-    blogService.like(updateObject).then(returnedBlog => {
-      setBlogs(
-        blogs.map(blog => (blog.id === returnedBlog.id ? returnedBlog : blog))
-      )
-    })
+  const likeBlog = blogToLike => {
+    likeBlogMutation.mutate(blogToLike)
   }
-
+  /*
   const removeBlog = removeId => {
     blogService.remove(removeId).then(() => {
       const updatedBlogs = blogs.filter(blog => blog.id !== removeId)
@@ -178,7 +180,7 @@ const App = () => {
           <Blog
             key={blog.id}
             blog={blog}
-            //like={likeBlog}
+            like={likeBlog}
             user={user}
             //remove={removeBlog}
           />
