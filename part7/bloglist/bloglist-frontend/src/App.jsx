@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useReducer } from 'react'
+import { useQuery } from '@tanstack/react-query'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
 import ErrorNotification from './components/ErrorNotification'
@@ -13,7 +14,7 @@ import {
 import NotificationContext from './NotificationContext'
 
 const App = () => {
-  const [blogs, setBlogs] = useState([])
+  //const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
@@ -22,9 +23,10 @@ const App = () => {
     notificationInitialState
   )
 
-  useEffect(() => {
-    blogService.getAll().then(blogs => setBlogs(blogs))
-  }, [])
+  const { data: blogs, isLoading } = useQuery({
+    queryKey: ['blogs'],
+    queryFn: () => blogService.getAll(),
+  })
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
@@ -44,7 +46,7 @@ const App = () => {
           ...returnedBlog,
           user: { username: user.username, name: user.name, id: user.id },
         }
-        setBlogs(blogs.concat(blogWithUserInfo))
+        //setBlogs(blogs.concat(blogWithUserInfo))
         notificationDispatch({
           type: 'SET_MESSAGE',
           payload: `Added new blog ${blogWithUserInfo.title} by ${blogWithUserInfo.author}`,
@@ -63,7 +65,7 @@ const App = () => {
         }, 3000)
       })
   }
-
+  /*
   const likeBlog = updateObject => {
     blogService.like(updateObject).then(returnedBlog => {
       setBlogs(
@@ -78,7 +80,7 @@ const App = () => {
       setBlogs(updatedBlogs)
     })
   }
-
+*/
   const handleLogin = async event => {
     event.preventDefault()
     try {
@@ -156,25 +158,32 @@ const App = () => {
     return blogs.slice().sort((a, b) => b.likes - a.likes)
   }
 
-  const showBlogs = () => (
-    <div>
-      <h2>blogs</h2>
-      <p>
-        {user.name} logged in
-        <button onClick={handleLogout}>logout</button>
-      </p>
-      {blogForm()}
-      {sortBlogsByLikes(blogs).map(blog => (
-        <Blog
-          key={blog.id}
-          blog={blog}
-          like={likeBlog}
-          user={user}
-          remove={removeBlog}
-        />
-      ))}
-    </div>
-  )
+  const showBlogs = () => {
+    const sortedBlogs = sortBlogsByLikes(blogs)
+    return (
+      <div>
+        <h2>blogs</h2>
+        <p>
+          {user.name} logged in
+          <button onClick={handleLogout}>logout</button>
+        </p>
+        {blogForm()}
+        {sortedBlogs.map(blog => (
+          <Blog
+            key={blog.id}
+            blog={blog}
+            //like={likeBlog}
+            user={user}
+            //remove={removeBlog}
+          />
+        ))}
+      </div>
+    )
+  }
+
+  if (isLoading) {
+    return <div>loading data...</div>
+  }
 
   return (
     <NotificationContext.Provider
