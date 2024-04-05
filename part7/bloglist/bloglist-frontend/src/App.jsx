@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useReducer } from 'react'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
 import ErrorNotification from './components/ErrorNotification'
@@ -23,6 +23,14 @@ const App = () => {
     notificationInitialState
   )
 
+  const queryClient = useQueryClient()
+  const newBlogMutation = useMutation({
+    mutationFn: blogWithUserInfo => blogService.create(blogWithUserInfo),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['blogs'] })
+    },
+  })
+
   const { data: blogs, isLoading } = useQuery({
     queryKey: ['blogs'],
     queryFn: () => blogService.getAll(),
@@ -37,34 +45,16 @@ const App = () => {
     }
   }, [])
 
-  const addBlog = blogObject => {
+  const addBlog = async blogObject => {
+    const blogWithUserInfo = {
+      ...blogObject,
+      user: { username: user.username, name: user.name, id: user.id },
+    }
+
     blogFormRef.current.toggleVisibility()
-    blogService
-      .create(blogObject)
-      .then(returnedBlog => {
-        const blogWithUserInfo = {
-          ...returnedBlog,
-          user: { username: user.username, name: user.name, id: user.id },
-        }
-        //setBlogs(blogs.concat(blogWithUserInfo))
-        notificationDispatch({
-          type: 'SET_MESSAGE',
-          payload: `Added new blog ${blogWithUserInfo.title} by ${blogWithUserInfo.author}`,
-        })
-        setTimeout(() => {
-          notificationDispatch({ type: 'CLEAR_MESSAGE' })
-        }, 3000)
-      })
-      .catch(error => {
-        notificationDispatch({
-          type: 'SET_ERROR_MESSAGE',
-          payload: 'Error adding new blog',
-        })
-        setTimeout(() => {
-          notificationDispatch({ type: 'CLEAR_ERROR_MESSAGE' })
-        }, 3000)
-      })
+    newBlogMutation.mutate(blogWithUserInfo)
   }
+
   /*
   const likeBlog = updateObject => {
     blogService.like(updateObject).then(returnedBlog => {
