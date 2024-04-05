@@ -26,8 +26,24 @@ const App = () => {
   const queryClient = useQueryClient()
   const newBlogMutation = useMutation({
     mutationFn: blogWithUserInfo => blogService.create(blogWithUserInfo),
-    onSuccess: () => {
+    onSuccess: returnedBlog => {
       queryClient.invalidateQueries({ queryKey: ['blogs'] })
+      notificationDispatch({
+        type: 'SET_MESSAGE',
+        payload: `Added new blog ${returnedBlog.title} by ${returnedBlog.author}`,
+      })
+      setTimeout(() => {
+        notificationDispatch({ type: 'CLEAR_MESSAGE' })
+      }, 3000)
+    },
+    onError: () => {
+      notificationDispatch({
+        type: 'SET_ERROR_MESSAGE',
+        payload: 'Error adding new blog',
+      })
+      setTimeout(() => {
+        notificationDispatch({ type: 'CLEAR_ERROR_MESSAGE' })
+      }, 3000)
     },
   })
 
