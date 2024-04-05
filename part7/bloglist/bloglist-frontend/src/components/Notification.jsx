@@ -1,4 +1,10 @@
-const Notification = ({ message }) => {
+import { useContext } from 'react'
+import NotificationContext from '../NotificationContext'
+
+const Notification = () => {
+  const { notificationState } = useContext(NotificationContext)
+  const message = notificationState.message
+
   if (message === null) {
     return null
   }

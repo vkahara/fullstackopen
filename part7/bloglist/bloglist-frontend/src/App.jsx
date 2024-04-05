@@ -10,13 +10,14 @@ import {
   notificationReducer,
   notificationInitialState,
 } from './reducers/notificationReducer'
+import NotificationContext from './NotificationContext'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [notificationState, dispatch] = useReducer(
+  const [notificationState, notificationDispatch] = useReducer(
     notificationReducer,
     notificationInitialState
   )
@@ -44,21 +45,21 @@ const App = () => {
           user: { username: user.username, name: user.name, id: user.id },
         }
         setBlogs(blogs.concat(blogWithUserInfo))
-        dispatch({
+        notificationDispatch({
           type: 'SET_MESSAGE',
           payload: `Added new blog ${blogWithUserInfo.title} by ${blogWithUserInfo.author}`,
         })
         setTimeout(() => {
-          dispatch({ type: 'CLEAR_MESSAGE' })
+          notificationDispatch({ type: 'CLEAR_MESSAGE' })
         }, 3000)
       })
       .catch(error => {
-        dispatch({
+        notificationDispatch({
           type: 'SET_ERROR_MESSAGE',
           payload: 'Error adding new blog',
         })
         setTimeout(() => {
-          dispatch({ type: 'CLEAR_ERROR_MESSAGE' })
+          notificationDispatch({ type: 'CLEAR_ERROR_MESSAGE' })
         }, 3000)
       })
   }
@@ -92,12 +93,12 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      dispatch({
+      notificationDispatch({
         type: 'SET_ERROR_MESSAGE',
         payload: 'Wrong username or password',
       })
       setTimeout(() => {
-        dispatch({ type: 'CLEAR_ERROR_MESSAGE' })
+        notificationDispatch({ type: 'CLEAR_ERROR_MESSAGE' })
       }, 3000)
     }
   }
@@ -176,12 +177,16 @@ const App = () => {
   )
 
   return (
-    <div>
-      <Notification message={notificationState.message} />
-      <ErrorNotification message={notificationState.errorMessage} />
-      {user === null && loginForm()}
-      {user !== null && showBlogs()}
-    </div>
+    <NotificationContext.Provider
+      value={{ notificationState, notificationDispatch }}
+    >
+      <div>
+        <Notification />
+        <ErrorNotification />
+        {user === null && loginForm()}
+        {user !== null && showBlogs()}
+      </div>
+    </NotificationContext.Provider>
   )
 }
 
