@@ -54,6 +54,13 @@ const App = () => {
     },
   })
 
+  const removeBlogMutation = useMutation({
+    mutationFn: blogToRemove => blogService.remove(blogToRemove),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['blogs'])
+    },
+  })
+
   const { data: blogs, isLoading } = useQuery({
     queryKey: ['blogs'],
     queryFn: () => blogService.getAll(),
@@ -81,14 +88,11 @@ const App = () => {
   const likeBlog = blogToLike => {
     likeBlogMutation.mutate(blogToLike)
   }
-  /*
-  const removeBlog = removeId => {
-    blogService.remove(removeId).then(() => {
-      const updatedBlogs = blogs.filter(blog => blog.id !== removeId)
-      setBlogs(updatedBlogs)
-    })
+
+  const removeBlog = blogToRemove => {
+    removeBlogMutation.mutate(blogToRemove)
   }
-*/
+
   const handleLogin = async event => {
     event.preventDefault()
     try {
@@ -182,7 +186,7 @@ const App = () => {
             blog={blog}
             like={likeBlog}
             user={user}
-            //remove={removeBlog}
+            remove={removeBlog}
           />
         ))}
       </div>
