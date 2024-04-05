@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useReducer } from 'react'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
 import ErrorNotification from './components/ErrorNotification'
@@ -6,14 +6,20 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
+import {
+  notificationReducer,
+  notificationInitialState,
+} from './reducers/notificationReducer'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [message, setMessage] = useState(null)
-  const [errorMessage, setErrorMessage] = useState(null)
+  const [notificationState, dispatch] = useReducer(
+    notificationReducer,
+    notificationInitialState
+  )
 
   useEffect(() => {
     blogService.getAll().then(blogs => setBlogs(blogs))
@@ -38,18 +44,21 @@ const App = () => {
           user: { username: user.username, name: user.name, id: user.id },
         }
         setBlogs(blogs.concat(blogWithUserInfo))
-        setMessage(
-          `Added new blog ${blogWithUserInfo.title} by ${blogWithUserInfo.author}`
-        )
+        dispatch({
+          type: 'SET_MESSAGE',
+          payload: `Added new blog ${blogWithUserInfo.title} by ${blogWithUserInfo.author}`,
+        })
         setTimeout(() => {
-          setMessage(null)
+          dispatch({ type: 'CLEAR_MESSAGE' })
         }, 3000)
       })
       .catch(error => {
-        setErrorMessage('Error adding new blog')
-        console.log('error', error)
+        dispatch({
+          type: 'SET_ERROR_MESSAGE',
+          payload: 'Error adding new blog',
+        })
         setTimeout(() => {
-          setErrorMessage(null)
+          dispatch({ type: 'CLEAR_ERROR_MESSAGE' })
         }, 3000)
       })
   }
@@ -83,10 +92,13 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      setErrorMessage('Wrong username or password')
+      dispatch({
+        type: 'SET_ERROR_MESSAGE',
+        payload: 'Wrong username or password',
+      })
       setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
+        dispatch({ type: 'CLEAR_ERROR_MESSAGE' })
+      }, 3000)
     }
   }
 
@@ -165,8 +177,8 @@ const App = () => {
 
   return (
     <div>
-      <Notification message={message} />
-      <ErrorNotification message={errorMessage} />
+      <Notification message={notificationState.message} />
+      <ErrorNotification message={notificationState.errorMessage} />
       {user === null && loginForm()}
       {user !== null && showBlogs()}
     </div>
