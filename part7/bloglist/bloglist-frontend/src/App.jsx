@@ -17,6 +17,7 @@ import {
 import NotificationContext from './NotificationContext'
 import { userInitialState, userReducer } from './reducers/userReducer'
 import UserContext from './UserContext'
+import BlogDetail from './views/BlogDetail'
 
 const App = () => {
   const [username, setUsername] = useState('')
@@ -221,6 +222,10 @@ const App = () => {
       <button onClick={handleLogout}>logout</button>
       <Router>
         <Routes>
+          <Route
+            path='blogs/:id'
+            element={<BlogDetail user={userState.user} />}
+          />
           <Route path='users/:id' element={<User />} />
           <Route path='/users' element={<Users />} />
           <Route path='/' element={<Home />} />
