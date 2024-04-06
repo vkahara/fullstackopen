@@ -1,13 +1,20 @@
+import userService from '../services/users'
+import { useQuery } from '@tanstack/react-query'
+
 const Users = () => {
+  const {
+    data: users,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ['users'],
+    queryFn: () => userService.getAll(),
+  })
+
   return (
     <div>
-      <h1>USERS</h1>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Commodi neque
-        dolores dolore placeat quibusdam sequi, ducimus eos facilis possimus
-        voluptatibus amet laudantium perspiciatis? Dolore, amet at. Cupiditate
-        ipsa autem molestias mollitia ab!
-      </p>
+      <h2>Users</h2>
+      {users && users.map(user => <li key={user.id}>{user.name}</li>)}
     </div>
   )
 }
