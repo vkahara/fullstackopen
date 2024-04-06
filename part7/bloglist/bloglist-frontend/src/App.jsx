@@ -12,12 +12,13 @@ import {
   notificationInitialState,
 } from './reducers/notificationReducer'
 import NotificationContext from './NotificationContext'
+import { userInitialState, userReducer } from './reducers/userReducer'
+import UserContext from './UserContext'
 
 const App = () => {
-  //const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [user, setUser] = useState(null)
+  const [userState, userDispatch] = useReducer(userReducer, userInitialState)
   const [notificationState, notificationDispatch] = useReducer(
     notificationReducer,
     notificationInitialState
@@ -70,7 +71,7 @@ const App = () => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
-      setUser(user)
+      userDispatch({ type: 'SET_USER', payload: user })
       blogService.setToken(user.token)
     }
   }, [])
@@ -78,7 +79,11 @@ const App = () => {
   const addBlog = async blogObject => {
     const blogWithUserInfo = {
       ...blogObject,
-      user: { username: user.username, name: user.name, id: user.id },
+      user: {
+        username: userState.username,
+        name: userState.name,
+        id: userState.id,
+      },
     }
 
     blogFormRef.current.toggleVisibility()
@@ -100,10 +105,10 @@ const App = () => {
         username,
         password,
       })
-
+      console.log('login', user)
       window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
 
-      setUser(user)
+      userDispatch({ type: 'SET_USER', payload: user })
       setUsername('')
       setPassword('')
     } catch (exception) {
@@ -121,7 +126,7 @@ const App = () => {
     event.preventDefault()
     try {
       window.localStorage.removeItem('loggedBlogappUser')
-      setUser(null)
+      userDispatch({ type: 'CLEAR_USER' })
     } catch (exception) {
       console.log('error', exception)
     }
@@ -176,7 +181,7 @@ const App = () => {
       <div>
         <h2>blogs</h2>
         <p>
-          {user.name} logged in
+          {userState.user.name} logged in
           <button onClick={handleLogout}>logout</button>
         </p>
         {blogForm()}
@@ -185,7 +190,7 @@ const App = () => {
             key={blog.id}
             blog={blog}
             like={likeBlog}
-            user={user}
+            user={userState.user}
             remove={removeBlog}
           />
         ))}
@@ -201,12 +206,14 @@ const App = () => {
     <NotificationContext.Provider
       value={{ notificationState, notificationDispatch }}
     >
-      <div>
-        <Notification />
-        <ErrorNotification />
-        {user === null && loginForm()}
-        {user !== null && showBlogs()}
-      </div>
+      <UserContext.Provider value={{ userState, userDispatch }}>
+        <div>
+          <Notification />
+          <ErrorNotification />
+          {userState.user === null && loginForm()}
+          {userState.user !== null && showBlogs()}
+        </div>
+      </UserContext.Provider>
     </NotificationContext.Provider>
   )
 }
