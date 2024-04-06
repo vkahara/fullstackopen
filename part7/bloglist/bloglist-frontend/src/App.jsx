@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useReducer } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
 import ErrorNotification from './components/ErrorNotification'
@@ -7,6 +8,7 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
+import Users from './views/Users'
 import {
   notificationReducer,
   notificationInitialState,
@@ -179,11 +181,6 @@ const App = () => {
     const sortedBlogs = sortBlogsByLikes(blogs)
     return (
       <div>
-        <h2>blogs</h2>
-        <p>
-          {userState.user.name} logged in
-          <button onClick={handleLogout}>logout</button>
-        </p>
         {blogForm()}
         {sortedBlogs.map(blog => (
           <Blog
@@ -201,8 +198,7 @@ const App = () => {
   if (isLoading) {
     return <div>loading data...</div>
   }
-
-  return (
+  const Home = () => (
     <NotificationContext.Provider
       value={{ notificationState, notificationDispatch }}
     >
@@ -215,6 +211,20 @@ const App = () => {
         </div>
       </UserContext.Provider>
     </NotificationContext.Provider>
+  )
+
+  return (
+    <div>
+      <h2>blogs</h2>
+      <p>{userState.user.name} logged in</p>
+      <button onClick={handleLogout}>logout</button>
+      <Router>
+        <Routes>
+          <Route path='/users' element={<Users />} />
+          <Route path='/' element={<Home />} />
+        </Routes>
+      </Router>
+    </div>
   )
 }
 
