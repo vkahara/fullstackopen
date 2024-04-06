@@ -9,6 +9,7 @@ import loginService from './services/login'
 import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
 import Users from './views/Users'
+import User from './views/User'
 import {
   notificationReducer,
   notificationInitialState,
@@ -220,6 +221,7 @@ const App = () => {
       <button onClick={handleLogout}>logout</button>
       <Router>
         <Routes>
+          <Route path='users/:id' element={<User />} />
           <Route path='/users' element={<Users />} />
           <Route path='/' element={<Home />} />
         </Routes>
