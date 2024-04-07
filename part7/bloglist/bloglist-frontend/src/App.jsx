@@ -109,7 +109,6 @@ const App = () => {
         username,
         password,
       })
-      console.log('login', user)
       window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
 
       userDispatch({ type: 'SET_USER', payload: user })
@@ -214,18 +213,29 @@ const App = () => {
     </NotificationContext.Provider>
   )
 
+  const style = {
+    padding: 5,
+    backgroundColor: 'gray',
+  }
+
   return (
     <div>
       <h2>blogs</h2>
 
       <Router>
-        {userState.user && (
-          <div>
-            <p>{userState.user && userState.user.name} logged in</p>
-            <button onClick={handleLogout}>logout</button>
-          </div>
-        )}
-        {userState.user === null && loginForm()}
+        <div>
+          {userState.user ? (
+            <div style={style}>
+              <Link to='/'>blogs </Link>
+              <Link to='/users'>users </Link>
+              {userState.user.name} logged in{' '}
+              <button onClick={handleLogout}>logout</button>
+            </div>
+          ) : (
+            loginForm()
+          )}
+        </div>
+
         <Routes>
           <Route
             path='blogs/:id'

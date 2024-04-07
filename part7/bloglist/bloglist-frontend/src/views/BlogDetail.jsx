@@ -13,7 +13,6 @@ const BlogDetail = ({ user }) => {
   })
 
   if (isLoading) return <div>...loading</div>
-  console.log(blog.title)
 
   const likeAction = async () => {
     await blogService.like({ ...blog, likes: blog.likes + 1 })
@@ -36,7 +35,6 @@ const BlogDetail = ({ user }) => {
       <button onClick={deleteAction}>remove</button>
     </div>
   )
-  console.log(blog)
   return (
     <div>
       <h2>
