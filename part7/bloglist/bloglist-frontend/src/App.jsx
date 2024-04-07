@@ -208,7 +208,6 @@ const App = () => {
         <div>
           <Notification />
           <ErrorNotification />
-          {userState.user === null && loginForm()}
           {userState.user !== null && showBlogs()}
         </div>
       </UserContext.Provider>
@@ -218,9 +217,15 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
-      <p>{userState.user.name} logged in</p>
-      <button onClick={handleLogout}>logout</button>
+
       <Router>
+        {userState.user && (
+          <div>
+            <p>{userState.user && userState.user.name} logged in</p>
+            <button onClick={handleLogout}>logout</button>
+          </div>
+        )}
+        {userState.user === null && loginForm()}
         <Routes>
           <Route
             path='blogs/:id'
