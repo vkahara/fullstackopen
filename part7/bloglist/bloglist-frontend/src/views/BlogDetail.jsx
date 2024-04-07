@@ -1,6 +1,7 @@
 import { useNavigate, useParams } from 'react-router-dom'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import blogService from '../services/blogs'
+import Comments from '../components/Comments'
 
 const BlogDetail = ({ user }) => {
   const { id } = useParams()
@@ -50,6 +51,7 @@ const BlogDetail = ({ user }) => {
       </div>
       <div> added by {blog.user.name}</div>
       <div>{user.id === blog.user.id && deleteButton()}</div>
+      <Comments id={id} />
     </div>
   )
 }
