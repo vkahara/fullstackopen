@@ -2,6 +2,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import blogService from '../services/blogs'
 import Comments from '../components/Comments'
+import { ListGroup, ListGroupItem, Button } from 'react-bootstrap'
 
 const BlogDetail = ({ user }) => {
   const { id } = useParams()
@@ -33,7 +34,9 @@ const BlogDetail = ({ user }) => {
   }
   const deleteButton = () => (
     <div>
-      <button onClick={deleteAction}>remove</button>
+      <Button variant='danger' onClick={deleteAction}>
+        remove
+      </Button>
     </div>
   )
   return (
@@ -41,17 +44,20 @@ const BlogDetail = ({ user }) => {
       <h2>
         {blog.title} {blog.author}
       </h2>
+      <ListGroup>
+        <ListGroupItem variant='dark'>{blog.url}</ListGroupItem>
 
-      <div>{blog.url}</div>
-      <div>
-        likes {blog.likes}
-        <button className='likeButton' onClick={likeAction}>
-          like
-        </button>
-      </div>
-      <div> added by {blog.user.name}</div>
-      <div>{user.id === blog.user.id && deleteButton()}</div>
-      <Comments id={id} />
+        <ListGroupItem variant='dark'>
+          likes {blog.likes}
+          <Button size='sm' className='likeButton' onClick={likeAction}>
+            like
+          </Button>
+        </ListGroupItem>
+
+        <ListGroupItem variant='dark'> added by {blog.user.name}</ListGroupItem>
+        <div>{user.id === blog.user.id && deleteButton()}</div>
+        <Comments id={id} />
+      </ListGroup>
     </div>
   )
 }

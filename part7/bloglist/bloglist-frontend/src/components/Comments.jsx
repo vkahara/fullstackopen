@@ -1,6 +1,7 @@
 import blogService from '../services/blogs'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
+import { ListGroup, ListGroupItem, Form, Button } from 'react-bootstrap'
 
 const Comments = ({ id }) => {
   const [newComment, setNewComment] = useState('')
@@ -24,18 +25,24 @@ const Comments = ({ id }) => {
   return (
     <div>
       <h2>comments</h2>
-      <form onSubmit={event => addComment(event)}>
-        <input
-          value={newComment}
-          onChange={event => setNewComment(event.target.value)}
-        />
-        <button type='submit'>add comment</button>
-      </form>
-      <ul>
+      <Form onSubmit={event => addComment(event)}>
+        <Form.Group className='mb-3' controlId='comment'>
+          <Form.Control
+            placeholder='comment'
+            value={newComment}
+            onChange={event => setNewComment(event.target.value)}
+          />
+        </Form.Group>
+        <Button type='submit'>add comment</Button>
+      </Form>
+      <br></br>
+      <ListGroup>
         {comments.map((comment, index) => (
-          <li key={index}>{comment}</li>
+          <ListGroupItem variant='dark' key={index}>
+            {comment}
+          </ListGroupItem>
         ))}
-      </ul>
+      </ListGroup>
     </div>
   )
 }

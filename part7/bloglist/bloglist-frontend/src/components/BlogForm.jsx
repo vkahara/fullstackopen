@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types'
 import { useState } from 'react'
+import { Form, Button } from 'react-bootstrap'
 
 const BlogForm = ({ createBlog }) => {
   const [newTitle, setNewTitle] = useState('')
@@ -21,42 +22,39 @@ const BlogForm = ({ createBlog }) => {
   return (
     <div>
       <h2>create new</h2>
-      <form onSubmit={event => addBlog(event, newTitle, newAuthor, newUrl)}>
-        <div>
-          title:
-          <input
+      <Form onSubmit={event => addBlog(event, newTitle, newAuthor, newUrl)}>
+        <Form.Group className='mb-3' controlId='title'>
+          <Form.Control
+            placeholder='title'
             data-testid='title-input'
-            id='title'
             type='text'
             value={newTitle}
             onChange={event => setNewTitle(event.target.value)}
           />
-        </div>
-        <div>
-          author:
-          <input
+        </Form.Group>
+        <Form.Group className='mb-3' controlId='author'>
+          <Form.Control
+            placeholder='author'
             data-testid='author-input'
-            id='author'
             type='text'
             value={newAuthor}
             onChange={event => setNewAuthor(event.target.value)}
           />
-        </div>
-        <div>
-          url:
-          <input
+        </Form.Group>
+        <Form.Group className='mb-3' controlId='url'>
+          <Form.Control
+            placeholder='url'
             data-testid='url-input'
-            id='url'
             type='text'
             value={newUrl}
             onChange={event => setNewUrl(event.target.value)}
           />
-        </div>
+        </Form.Group>
 
-        <button id='create' type='submit'>
+        <Button variant='primary' id='create' type='submit'>
           create
-        </button>
-      </form>
+        </Button>
+      </Form>
     </div>
   )
 }

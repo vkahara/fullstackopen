@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useReducer } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
-import { Table } from 'react-bootstrap'
+import { Table, Navbar, Nav, Container, Button } from 'react-bootstrap'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
 import ErrorNotification from './components/ErrorNotification'
@@ -184,15 +184,22 @@ const App = () => {
     return (
       <div>
         {blogForm()}
-        {sortedBlogs.map(blog => (
-          <Blog
-            key={blog.id}
-            blog={blog}
-            like={likeBlog}
-            user={userState.user}
-            remove={removeBlog}
-          />
-        ))}
+        <Table striped bordered hover variant='dark'>
+          <thead></thead>
+          <tbody>
+            {sortedBlogs.map(blog => (
+              <tr key={blog.id}>
+                <Blog
+                  key={blog.id}
+                  blog={blog}
+                  like={likeBlog}
+                  user={userState.user}
+                  remove={removeBlog}
+                />
+              </tr>
+            ))}
+          </tbody>
+        </Table>
       </div>
     )
   }
@@ -214,40 +221,44 @@ const App = () => {
     </NotificationContext.Provider>
   )
 
-  const style = {
-    padding: 5,
-    backgroundColor: 'gray',
-  }
-
   return (
     <div className='container'>
-      <h2>blogs</h2>
-      <Table striped>
-        <Router>
-          <tbody>
-            {userState.user ? (
-              <div style={style}>
-                <Link to='/'>blogs </Link>
-                <Link to='/users'>users </Link>
-                {userState.user.name} logged in{' '}
-                <button onClick={handleLogout}>logout</button>
-              </div>
-            ) : (
-              loginForm()
-            )}
-          </tbody>
+      <Router>
+        <div>
+          {userState.user ? (
+            <Navbar bg='dark' data-bs-theme='dark'>
+              <Container>
+                <Nav className='me-auto'>
+                  <Link to='/' className='nav-link'>
+                    blogs{' '}
+                  </Link>
+                  <Link to='/users' className='nav-link'>
+                    users{' '}
+                  </Link>
+                </Nav>
+                <Navbar.Collapse className='justify-content-end'>
+                  <Navbar.Text>{userState.user.name} logged in </Navbar.Text>
+                  <Button variant='warning' onClick={handleLogout}>
+                    logout
+                  </Button>
+                </Navbar.Collapse>
+              </Container>
+            </Navbar>
+          ) : (
+            loginForm()
+          )}
+        </div>
 
-          <Routes>
-            <Route
-              path='blogs/:id'
-              element={<BlogDetail user={userState.user} />}
-            />
-            <Route path='users/:id' element={<User />} />
-            <Route path='/users' element={<Users />} />
-            <Route path='/' element={<Home />} />
-          </Routes>
-        </Router>
-      </Table>
+        <Routes>
+          <Route
+            path='blogs/:id'
+            element={<BlogDetail user={userState.user} />}
+          />
+          <Route path='users/:id' element={<User />} />
+          <Route path='/users' element={<Users />} />
+          <Route path='/' element={<Home />} />
+        </Routes>
+      </Router>
     </div>
   )
 }
