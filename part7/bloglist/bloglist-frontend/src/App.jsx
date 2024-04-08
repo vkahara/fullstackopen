@@ -1,6 +1,12 @@
 import { useState, useEffect, useRef, useReducer } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link,
+  useNavigate,
+} from 'react-router-dom'
 import { Table, Navbar, Nav, Container, Button } from 'react-bootstrap'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
@@ -126,14 +132,20 @@ const App = () => {
     }
   }
 
-  const handleLogout = async event => {
-    event.preventDefault()
-    try {
+  const LogoutButton = () => {
+    const navigate = useNavigate()
+
+    const handleLogout = async event => {
+      event.preventDefault()
       window.localStorage.removeItem('loggedBlogappUser')
       userDispatch({ type: 'CLEAR_USER' })
-    } catch (exception) {
-      console.log('error', exception)
+      navigate('/')
     }
+    return (
+      <Button variant='warning' onClick={handleLogout}>
+        logout
+      </Button>
+    )
   }
 
   const loginForm = () => (
@@ -238,9 +250,7 @@ const App = () => {
                 </Nav>
                 <Navbar.Collapse className='justify-content-end'>
                   <Navbar.Text>{userState.user.name} logged in </Navbar.Text>
-                  <Button variant='warning' onClick={handleLogout}>
-                    logout
-                  </Button>
+                  <LogoutButton />
                 </Navbar.Collapse>
               </Container>
             </Navbar>
