@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useReducer } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
+import { Table } from 'react-bootstrap'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
 import ErrorNotification from './components/ErrorNotification'
@@ -219,33 +220,34 @@ const App = () => {
   }
 
   return (
-    <div>
+    <div className='container'>
       <h2>blogs</h2>
+      <Table striped>
+        <Router>
+          <tbody>
+            {userState.user ? (
+              <div style={style}>
+                <Link to='/'>blogs </Link>
+                <Link to='/users'>users </Link>
+                {userState.user.name} logged in{' '}
+                <button onClick={handleLogout}>logout</button>
+              </div>
+            ) : (
+              loginForm()
+            )}
+          </tbody>
 
-      <Router>
-        <div>
-          {userState.user ? (
-            <div style={style}>
-              <Link to='/'>blogs </Link>
-              <Link to='/users'>users </Link>
-              {userState.user.name} logged in{' '}
-              <button onClick={handleLogout}>logout</button>
-            </div>
-          ) : (
-            loginForm()
-          )}
-        </div>
-
-        <Routes>
-          <Route
-            path='blogs/:id'
-            element={<BlogDetail user={userState.user} />}
-          />
-          <Route path='users/:id' element={<User />} />
-          <Route path='/users' element={<Users />} />
-          <Route path='/' element={<Home />} />
-        </Routes>
-      </Router>
+          <Routes>
+            <Route
+              path='blogs/:id'
+              element={<BlogDetail user={userState.user} />}
+            />
+            <Route path='users/:id' element={<User />} />
+            <Route path='/users' element={<Users />} />
+            <Route path='/' element={<Home />} />
+          </Routes>
+        </Router>
+      </Table>
     </div>
   )
 }
