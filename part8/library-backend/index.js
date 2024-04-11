@@ -101,14 +101,21 @@ const typeDefs = `
     id: ID!
     genres: [String!]
   }
+
+  type Author {
+    author: String!
+  }
+
   type Query {
     bookCount: Int!
+    authorCount: Int!
   }
 `;
 
 const resolvers = {
   Query: {
-    bookCount: () => books.length
+    bookCount: () => books.length,
+    authorCount: () => authors.length
   }
 };
 
